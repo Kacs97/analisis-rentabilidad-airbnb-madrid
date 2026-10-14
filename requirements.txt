@@ -1,0 +1,11 @@
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+folium>=0.17
+branca>=0.7
+jupyter>=1.0
+ipykernel>=6.29
+lxml>=5.0
+beautifulsoup4>=4.12
+html5lib>=1.1

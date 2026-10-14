@@ -1,0 +1,44 @@
+# Archivos del sistema
+desktop.ini
+Thumbs.db
+
+# Entornos
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+.notebooks/
+
+# Datos: se ignora todo salvo el CSV de precio/m2 por distrito y la base SQLite del proyecto
+datos/*
+!datos/brutos/
+datos/brutos/*
+!datos/intermedios/
+datos/intermedios/*
+!datos/brutos/precio_m2_distritos_madrid.csv
+*.csv
+!datos/brutos/precio_m2_distritos_madrid.csv
+*.xlsx
+*.parquet
+*.feather
+*.db
+*.sqlite
+*.duckdb
+!datos/intermedios/mercado_inmobiliario.db
+
+# Informes: se versionan los entregables (informes, gráficos y dashboards)
+reports/
+
+# Archivos de log
+*.log
+
+# Configuración de IDE
+.vscode/
+.idea/
+
+# Temporales
+_tmp_build/

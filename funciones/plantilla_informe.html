@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rentabilidad Turística Madrid</title>
+<style>
+:root{
+  --navy:#0a2f6b; --blue:#1f6fd1; --mid:#5b9bea; --light:#a9cdf5; --pale:#e6f0fc; --bg:#d9e6f6;
+  --ink:#16263f; --muted:#5b6b82; --line:#d8e3f2; --card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;color:var(--ink);overflow:hidden;
+  background:radial-gradient(1200px 600px at 20% 0%,#eaf2fc 0%,var(--bg) 60%,#c9dcf2 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:14px}
+/* marco del informe */
+.stage{position:relative;width:min(1180px,100%);height:min(680px,calc(100vh - 96px));background:#f7fafe;border-radius:18px;
+  box-shadow:0 20px 50px rgba(10,47,107,.22),0 0 0 1px rgba(10,47,107,.08);overflow:hidden}
+.bar{position:absolute;top:0;left:0;height:4px;background:var(--blue);transition:width .3s;z-index:3}
+.slide{display:none;position:absolute;inset:0;padding:22px 30px 20px;flex-direction:column;gap:12px;min-height:0}
+.slide.active{display:flex;animation:in .3s ease}
+@keyframes in{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+/* cabecera */
+.tag{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 11px;border-radius:999px;background:var(--navy);color:#fff}
+.tag.b{background:var(--blue)}.tag.c{background:#3f86e0}
+h2{font-size:clamp(18px,2.1vw,25px);line-height:1.18;font-weight:700;color:var(--navy);margin-top:6px;max-width:980px}
+/* franja de impacto */
+.impact{display:flex;align-items:center;gap:16px;background:linear-gradient(100deg,#0a2f6b,#1f6fd1);color:#fff;border-radius:12px;padding:10px 18px}
+.impact .big{font-size:clamp(26px,3.2vw,38px);font-weight:800;line-height:1;white-space:nowrap}
+.impact .txt{font-size:14px;line-height:1.35;color:#e3eefc}
+.impact .txt b{color:#fff}
+.impact .lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#a9cdf5;display:block;margin-bottom:2px}
+/* rejillas */
+.grid{flex:1;min-height:0;display:grid;gap:12px}
+.g1{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr)}
+.g2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
+.g2 .row{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;min-height:0;min-width:0}
+.ex-t{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.05em}
+.ex-d{font-size:13px;font-weight:600;margin:1px 0 6px;line-height:1.25}
+.vis{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.vis img{max-width:100%;max-height:100%;object-fit:contain}
+.vis iframe{width:100%;height:100%;border:0;border-radius:8px}
+.src{font-size:10.5px;color:var(--muted);margin-top:5px}
+.panel{display:flex;flex-direction:column;gap:8px;justify-content:flex-start;min-height:0;overflow:auto}
+.ins{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:9px;padding:8px 12px;font-size:13px;line-height:1.4}
+.ins b{color:var(--navy)}
+.ins.warn{border-left-color:var(--muted)}
+.ph{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+/* tablas */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:5px 6px;border-bottom:2px solid var(--line)}
+td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+td small{display:block;color:var(--muted);font-size:11px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.vis.tbl{align-items:flex-start;overflow:auto}
+/* portada */
+.cover{background:linear-gradient(135deg,#071f47 0%,#0a2f6b 55%,#1f6fd1 100%);color:#fff;justify-content:center;padding:40px 56px;gap:0}
+.cover .kick{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#a9cdf5;margin-bottom:16px}
+.cover h1{font-size:clamp(28px,4vw,46px);line-height:1.1;max-width:860px;font-weight:800}
+.cover p{margin-top:18px;font-size:clamp(14px,1.5vw,18px);color:#cfe2fb;max-width:640px}
+.cover .meta{margin-top:30px;font-size:13px;line-height:1.7;color:#a9cdf5}
+.cover .meta b{color:#fff}
+.logos{position:absolute;right:28px;bottom:26px;display:flex;gap:12px}
+.logos span{width:76px;height:76px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.logos img{width:60px;height:60px;object-fit:contain}
+/* resultados */
+.hero{flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:12px}
+.h{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;border-top:4px solid var(--blue)}
+.h .n{font-size:clamp(34px,4.6vw,56px);font-weight:800;line-height:1;color:var(--navy)}
+.h .t{font-size:14.5px;font-weight:600;margin-top:6px;line-height:1.3}
+.h .s{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+.answer{background:var(--pale);border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-size:14px;line-height:1.4}
+.answer b{color:var(--navy)}
+.cols{flex:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cols .card{padding:16px 18px;gap:10px}
+.cols ul.clean li{font-size:14px}
+ul.clean{list-style:none;display:grid;gap:7px}
+ul.clean li{padding-left:16px;position:relative;font-size:13px;line-height:1.4}
+ul.clean li:before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
+/* navegacion */
+.nav{width:min(1180px,100%);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.btn{border:0;border-radius:999px;padding:10px 22px;font:600 14px/1 inherit;font-family:inherit;cursor:pointer;background:var(--navy);color:#fff;transition:background .15s}
+.btn:hover{background:var(--blue)}
+.btn:disabled{opacity:.35;cursor:default;background:var(--navy)}
+.btn:focus-visible,.dot:focus-visible{outline:3px solid var(--mid);outline-offset:2px}
+.dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}
+.dot{width:11px;height:11px;border-radius:50%;border:0;background:#aac3e4;cursor:pointer;padding:0}
+.dot.active{background:var(--navy);transform:scale(1.3)}
+.count{font-size:13px;color:var(--muted);min-width:54px;text-align:center}
+@media (max-width:900px){
+  body{overflow:auto;display:block;padding:8px}
+  .stage{height:auto;min-height:70vh}
+  .slide{position:relative;inset:auto;padding:16px}
+  .slide.active{min-height:70vh}
+  .g1,.g2,.g2 .row,.hero,.cols{grid-template-columns:1fr;grid-template-rows:none}
+  .vis iframe{height:320px}
+  .dots{display:none}
+}
+@media print{
+  body{overflow:visible;display:block;background:#fff}.stage{height:auto;box-shadow:none}.slide{display:flex!important;position:relative;page-break-after:always;height:100vh}.nav,.bar{display:none}
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+<div class="bar" id="bar"></div>
+
+<!-- 1 Portada -->
+<section class="slide cover" aria-label="Portada">
+  <div class="logos"><span><img src="logos/airbnb.png" alt="Airbnb"></span><span><img src="logos/idealista.webp" alt="Idealista"></span></div>
+  <div class="kick">Informe de inversión · Alquiler turístico en Madrid</div>
+  <h1>Madrid esconde zonas y perfiles con una rentabilidad que duplica la media</h1>
+  <p>Dónde y qué comprar, a partir del análisis de 7.295 anuncios en 21 distritos.</p>
+  <div class="meta"><b>Elaborado por Kelvin Carrero</b> · Octubre 2026<br>Fuentes de Airbnb e Idealista</div>
+</section>
+
+<!-- 2 Resultados -->
+<section class="slide" aria-label="Resultados clave">
+  <span class="tag">Resultados que impactan al negocio</span>
+  <h2>Cuatro hallazgos que cambian la decisión de compra</h2>
+  <div class="hero">
+    <div class="h"><div class="n">62</div><div class="t">apartamentos con rentabilidad bruta ≥ 15% y una inversión inferior a 150.000 €</div><div class="s">25 en Puente de Vallecas, 23 en Carabanchel y 10 en Usera.</div></div>
+    <div class="h"><div class="n">10,6%</div><div class="t">rentabilidad mediana en Comillas (Carabanchel), con un coste mediano de 186.664 €</div><div class="s">Ventas (Ciudad Lineal) 9,8% y Palos de Moguer (Arganzuela) 9,2%, frente al 5,1% de Madrid.</div></div>
+    <div class="h"><div class="n">+48%</div><div class="t">más rentabilidad con el perfil foco: apartamento entero de 2 habitaciones y 4+ personas</div><div class="s">7,5% mediano en Latina, Carabanchel, Arganzuela y Centro (1.009 inmuebles); el 39% supera el 10%.</div></div>
+    <div class="h"><div class="n">÷3</div><div class="t">es lo que cae la rentabilidad si se elige mal: habitación privada o compartida</div><div class="s">1,7% mediano frente al 5,6% del apartamento entero; Salamanca, Chamartín y Chamberí rinden 3,4%.</div></div>
+  </div>
+  <div class="answer"><b>Qué hacer:</b> priorizar apartamentos enteros de 2 habitaciones en Latina, Carabanchel, Arganzuela y Centro, y tener Puente de Vallecas y Ciudad Lineal como segunda línea.</div>
+</section>
+
+<!-- 3 Distritos -->
+<section class="slide" aria-label="Distritos">
+  <span class="tag">Hallazgo 1 · Dónde comprar</span>
+  <h2>Latina, Arganzuela, Carabanchel y Centro superan la rentabilidad mediana de Madrid</h2>
+  <div class="impact"><div class="big">7,0%</div><div class="txt"><span class="lbl">Impacto</span><b>Latina</b> frente al <b>5,1%</b> de la ciudad; Arganzuela 6,7%, Carabanchel 6,6% y Centro 6,1%.</div></div>
+  <div class="grid g1">
+    <div class="card">
+      <div class="ex-t">Exhibit 1</div><div class="ex-d">Mediana del margen bruto por distrito (30+ registros)</div>
+      <div class="vis"><img src="{{distritos}}" alt="Mediana del margen bruto por distrito"></div>
+      <div class="src">En azul oscuro, los distritos de interés. Fuente: Inside Airbnb, Idealista; elaboración propia.</div>
+    </div>
+    <div class="panel">
+      <div class="ph">Insights</div>
+      <div class="ins"><b>Centro es el más fiable</b>: 3.277 registros (45% de la muestra); Latina el más ajustado, con 105.</div>
+      <div class="ins"><b>Salamanca (3,3%), Chamartín (3,3%) y Fuencarral - El Pardo (2,9%)</b> cierran la tabla: descartarlos.</div>
+      <div class="ins warn"><b>Vicálvaro (7,6%) no es concluyente</b>: solo 15 registros, su mediana no es fiable.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 Dispersion -->
+<section class="slide" aria-label="Dispersión">
+  <span class="tag">Hallazgo 1 · Dónde comprar</span>
+  <h2>El distrito no basta: dentro de cada uno el margen va de menos del 3% a más del 10%</h2>
+  <div class="impact"><div class="big">39%</div><div class="txt"><span class="lbl">Impacto</span>de los apartamentos de <b>2 habitaciones y 4+ personas</b> de los cuatro distritos supera el <b>10%</b> de rentabilidad bruta.</div></div>
+  <div class="grid g1">
+    <div class="card">
+      <div class="ex-t">Exhibit 2</div><div class="ex-d">Distribución del margen bruto por distrito (margen ≤ 50%)</div>
+      <div class="vis"><img src="{{boxplot}}" alt="Boxplots del margen bruto por distrito"></div>
+      <div class="src">Línea oscura = mediana; puntos = inmuebles atípicos. Fuente: elaboración propia.</div>
+    </div>
+    <div class="panel">
+      <div class="ph">Insights</div>
+      <div class="ins"><b>Cajas anchas</b>: en los distritos de interés el 25% inferior queda por debajo de ~3% y el 25% superior supera ~10%.</div>
+      <div class="ins"><b>Todos los atípicos son altos</b> y no hay márgenes negativos; extremos como el 81% de Centro no son referencia.</div>
+      <div class="ins"><b>Salamanca, Chamartín y Chamberí</b> tienen cajas estrechas y medianas bajas: poca opción de una buena compra.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 Que comprar -->
+<section class="slide" aria-label="Perfil de inmueble">
+  <span class="tag b">Hallazgo 2 · Qué comprar</span>
+  <h2>El apartamento entero de 2 habitaciones y 4+ personas es el perfil que mejor rinde</h2>
+  <div class="impact"><div class="big">+48%</div><div class="txt"><span class="lbl">Impacto</span>Rentabilidad mediana del perfil foco <b>7,5%</b> frente al <b>5,1%</b> de Madrid; elegir una habitación privada la deja en 1,7%.</div></div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="ex-t">Exhibit 3</div><div class="ex-d">Margen bruto por habitaciones y por capacidad</div>
+      <div class="vis"><img src="{{barras_margen}}" alt="Margen bruto por habitaciones y capacidad"></div>
+      <div class="src">Más oscuro = mayor valor. Fuente: elaboración propia.</div>
+    </div>
+    <div class="card">
+      <div class="ex-t">Exhibit 4</div><div class="ex-d">Margen bruto: distrito × tipo de alojamiento</div>
+      <div class="vis"><img src="{{hm_room}}" alt="Heatmap de margen bruto por distrito y tipo de alojamiento"></div>
+      <div class="src">Mediana y nº de inmuebles por celda. Fuente: elaboración propia.</div>
+    </div>
+    <div class="row">
+      <div class="ins"><b>2 habitaciones: 6,1%</b> frente a 4,7% (1 hab.), 4,6% (3 hab.) y 4,5% (4+ hab.).</div>
+      <div class="ins"><b>+5 personas 6,4% y 4 personas 5,9%</b>; 1 persona solo 1,0%.</div>
+      <div class="ins"><b>Entero 5,6% vs. privada 1,8%</b>; en los 4 distritos el entero rinde 6,5–8,7% (Latina 8,7%).</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 Barrios -->
+<section class="slide" aria-label="Barrios">
+  <span class="tag b">Hallazgo 3 · Barrios</span>
+  <h2>Hay barrios con rentabilidad mediana de 9–11% y compras desde ~190.000 €</h2>
+  <div class="impact"><div class="big">10,6%</div><div class="txt"><span class="lbl">Impacto</span><b>Comillas (Carabanchel)</b>: rentabilidad mediana con un coste mediano de <b>186.664 €</b> (46 anuncios).</div></div>
+  <div class="grid g1">
+    <div class="card">
+      <div class="ex-t">Exhibit 5</div><div class="ex-d">Barrios con mayor margen mediano (apartamento entero, 30+ anuncios)</div>
+      <div class="vis tbl"><table>
+        <thead><tr><th>Barrio</th><th>Distrito</th><th class="num">Margen</th><th class="num">Coste med.</th><th class="num">Ocup. (días)</th><th class="num">n</th></tr></thead>
+        <tbody>{{tabla_barrios}}</tbody></table></div>
+      <div class="src">Coste = estimación por m² del distrito. Fuente: elaboración propia.</div>
+    </div>
+    <div class="panel">
+      <div class="ph">Insights</div>
+      <div class="ins"><b>Opañel y Puerta del Ángel</b> rinden 8,4% con una inversión mediana de 144.000–152.000 €.</div>
+      <div class="ins"><b>Palos de Moguer (Arganzuela)</b> combina 9,2% con 198 días de ocupación y 120 anuncios.</div>
+      <div class="ins warn"><b>Comillas (102 días) y Opañel (84) tienen poca ocupación</b> frente a los 110 de Madrid: validar antes de comprar.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 Segunda linea -->
+<section class="slide" aria-label="Segunda línea">
+  <span class="tag b">Hallazgo 3 · Segunda línea</span>
+  <h2>Fuera de los cuatro distritos, Puente de Vallecas y Ciudad Lineal ofrecen los mejores perfiles</h2>
+  <div class="impact"><div class="big">8,4%</div><div class="txt"><span class="lbl">Impacto</span>mediana de un <b>2 habitaciones en Puente de Vallecas</b> (50 inmuebles); <b>Ciudad Lineal</b> llega al 8,5% con 2 habitaciones (52).</div></div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="ex-t">Exhibit 6</div><div class="ex-d">Margen por distrito y nº de habitaciones (resto de distritos)</div>
+      <div class="vis"><img src="{{hm_resto}}" alt="Heatmap de margen por distrito y habitaciones"></div>
+      <div class="src">Apartamento entero, distritos con 30+ registros. Fuente: elaboración propia.</div>
+    </div>
+    <div class="card">
+      <div class="ex-t">Exhibit 7</div><div class="ex-d">Mejores perfiles por barrio (10+ inmuebles)</div>
+      <div class="vis tbl"><table>
+        <thead><tr><th>Barrio</th><th>Perfil</th><th class="num">Margen</th><th class="num">Ocup.</th><th class="num">n</th></tr></thead>
+        <tbody>{{tabla_perfiles}}</tbody></table></div>
+      <div class="src">Perfil = habitaciones · capacidad. Ocupación en días/año.</div>
+    </div>
+    <div class="row">
+      <div class="ins"><b>En los 4 distritos de interés, 2 hab. rinde 7,1–8,0%</b>: Latina 8,0%, Carabanchel 7,5%, Arganzuela y Centro 7,1%.</div>
+      <div class="ins"><b>Retiro, Chamberí, Moncloa - Aravaca y Usera</b> rinden más con 2 habitaciones.</div>
+      <div class="ins warn"><b>Evitar</b> Salamanca (3,0–4,2% en todos los tamaños) y Chamartín con 3+ hab. (2,3%).</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 Ocupacion -->
+<section class="slide" aria-label="Ocupación">
+  <span class="tag c">Hallazgo 4 · Ocupación</span>
+  <h2>La ocupación respalda la rentabilidad: más capacidad, más días alquilados</h2>
+  <div class="impact"><div class="big">37%</div><div class="txt"><span class="lbl">Impacto</span>de los inmuebles (<b>2.684</b>) supera a la vez <b>150 días de ocupación</b> y <b>5% de margen</b>.</div></div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="ex-t">Exhibit 8</div><div class="ex-d">Ocupación estimada por capacidad y por habitaciones</div>
+      <div class="vis"><img src="{{barras_ocup}}" alt="Ocupación por capacidad y habitaciones"></div>
+      <div class="src">Mediana de días/año. Fuente: Inside Airbnb; elaboración propia.</div>
+    </div>
+    <div class="card">
+      <div class="ex-t">Exhibit 9</div><div class="ex-d">Ocupación estimada vs. margen bruto</div>
+      <div class="vis"><img src="{{scatter}}" alt="Dispersión de ocupación y margen"></div>
+      <div class="src">Líneas: 150 días y 5% de margen. Margen ≤ 50%.</div>
+    </div>
+    <div class="row">
+      <div class="ins"><b>1 persona: 54 días; +5 personas: 126</b>. Con 4+ hab. 122 días y con 2 hab. 120, frente a 102 con 1 hab.</div>
+      <div class="ins"><b>Arganzuela lidera la ocupación</b> entre los distritos con volumen (150 días), seguida de Centro (126).</div>
+      <div class="ins warn"><b>La ocupación es estimada</b> por un modelo: confirmar con reservas reales antes de invertir.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 Mapas calor -->
+<section class="slide" aria-label="Mapas de calor">
+  <span class="tag c">Hallazgo 4 · Mapas</span>
+  <h2>Los mapas de calor ayudan a localizar zonas dentro de la ciudad</h2>
+  <div class="impact"><div class="big">45%</div><div class="txt"><span class="lbl">Impacto</span>de los anuncios están en Centro: la intensidad del mapa refleja <b>densidad × valor</b>, no solo rentabilidad.</div></div>
+  <div class="grid g2">
+    <div class="card">
+      <div class="ex-t">Exhibit 10</div><div class="ex-d">Mapa de calor del margen bruto</div>
+      <div class="vis"><iframe src="mapas/mapa_calor_margen_bruto.html" title="Mapa de calor del margen bruto" loading="lazy"></iframe></div>
+      <div class="src">Rojo = mayor margen; azul = menor. Margen limitado a 50%.</div>
+    </div>
+    <div class="card">
+      <div class="ex-t">Exhibit 11</div><div class="ex-d">Mapa de calor de la ocupación estimada</div>
+      <div class="vis"><iframe src="mapas/mapa_calor_ocupacion.html" title="Mapa de calor de la ocupación" loading="lazy"></iframe></div>
+      <div class="src">Rojo = más días de ocupación; azul = menos.</div>
+    </div>
+    <div class="row">
+      <div class="ins"><b>Úsalos para explorar</b> barrios concretos y combinarlos con las medianas de los exhibits 1 y 6.</div>
+      <div class="ins"><b>Acerca el mapa</b> con la rueda del ratón para ver las calles y los barrios.</div>
+      <div class="ins warn"><b>No concluyen por sí solos</b>: la decisión se apoya en medianas por distrito y perfil.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9b Score turistico -->
+<section class="slide" aria-label="Score turístico">
+  <span class="tag c">Hallazgo 4 · Score turístico</span>
+  <h2>La cercanía a los puntos turísticos eleva la ocupación y la rentabilidad, pero no lo explica todo</h2>
+  <div class="impact"><div class="big">7,0%</div><div class="txt"><span class="lbl">Impacto</span>margen mediano del <b>25% de anuncios con mayor score turístico</b> frente al <b>4,2%</b> del 25% con menor score; ocupación de <b>138 vs 84 días</b>.</div></div>
+  <div class="grid g1">
+    <div class="card">
+      <div class="ex-t">Exhibit 12</div><div class="ex-d">Mapa de calor del score turístico (proximidad a 20 puntos de interés)</div>
+      <div class="vis"><iframe src="mapas/mapa_calor_score_turistico.html" title="Mapa de calor del score turístico" loading="lazy"></iframe></div>
+      <div class="src">Score 0–100 según distancia a hitos turísticos (radio de 5 km). Rojo = mayor score.</div>
+    </div>
+    <div class="panel">
+      <div class="card" style="flex:none">
+        <div class="ex-t">Exhibit 13</div><div class="ex-d">Resultados por cuartil de score turístico</div>
+        <table><thead><tr><th>Cuartil</th><th class="num">Margen</th><th class="num">Ocup.</th><th class="num">€/noche</th></tr></thead>
+        <tbody>{{tabla_score}}</tbody></table>
+      </div>
+      <div class="ins"><b>Centro (94,5) y Arganzuela (77,0)</b> lideran el score; Arganzuela tiene además la mayor ocupación entre los distritos con volumen (150 días).</div>
+      <div class="ins"><b>Latina (59,9) y Carabanchel (41,8)</b> rinden 7,0% y 6,6% con score medio gracias a un coste de compra menor (~144.000–152.000 € frente a ~291.000 € en Centro).</div>
+      <div class="ins warn"><b>La relación es débil</b> (correlación ~0,13): el score ayuda, pero no es el único factor: el coste de compra también cambia el resultado.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 Oportunidades -->
+<section class="slide" aria-label="Oportunidades">
+  <span class="tag c">Hallazgo 5 · Oportunidades</span>
+  <h2>62 apartamentos ofrecen ≥ 15% de rentabilidad con una inversión inferior a 150.000 €</h2>
+  <div class="impact"><div class="big">152</div><div class="txt"><span class="lbl">Impacto</span>inmuebles combinan <b>margen &gt; 20%</b> y <b>ocupación &gt; 200 días</b>; casi la mitad (74) están en Centro y el 75% en los cuatro distritos de interés.</div></div>
+  <div class="grid g1">
+    <div class="card">
+      <div class="ex-t">Exhibit 14</div><div class="ex-d">Mapa de oportunidades: tamaño y color según margen bruto</div>
+      <div class="vis"><iframe src="mapas/mapa_oportunidades.html" title="Mapa de oportunidades" loading="lazy"></iframe></div>
+      <div class="src">Pasa el ratón sobre cada punto para ver sus métricas.</div>
+    </div>
+    <div class="panel">
+      <div class="card" style="flex:none">
+        <div class="ex-t">Exhibit 15</div><div class="ex-d">Apartamentos con margen ≥ 15% según inversión</div>
+        <table><thead><tr><th style="white-space:nowrap">Coste</th><th class="num">Inmuebles</th><th>Principales distritos</th></tr></thead>
+        <tbody>{{tabla_inversion}}</tbody></table>
+      </div>
+      <div class="ins warn"><b>Son casos excepcionales</b> (2% del total): úsalos como lista de visitas, no como expectativa media.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 Recomendaciones -->
+<section class="slide" aria-label="Recomendaciones">
+  <span class="tag">Conclusiones</span>
+  <h2>Recomendación: priorizar cuatro distritos, un perfil y una lista corta de inmuebles</h2>
+  <div class="cols">
+    <div class="card"><div class="ex-t">Prioridad 1</div>
+      <ul class="clean"><li>Latina, Carabanchel, Arganzuela y Centro.</li><li>Apartamento entero de 2 habitaciones, 4+ personas.</li><li>Rentabilidad mediana esperada: 7,1–8,0% por distrito.</li></ul></div>
+    <div class="card"><div class="ex-t">Prioridad 2</div>
+      <ul class="clean"><li>Puente de Vallecas y Ciudad Lineal con 2 habitaciones (8,4–8,5%).</li><li>Barrios de los exhibits 5 y 7.</li><li>Visitar los inmuebles del mapa de oportunidades.</li></ul></div>
+    <div class="card"><div class="ex-t">Descartar</div>
+      <ul class="clean"><li>Salamanca, Chamartín y Fuencarral - El Pardo.</li><li>Habitación privada y compartida, y capacidad de 1 persona.</li><li>Distritos con menos de 30 registros (Vicálvaro, Moratalaz).</li></ul></div>
+  </div>
+  <div class="cols">
+    <div class="card"><div class="ex-t">Próximos pasos</div>
+      <ul class="clean"><li>Validar la ocupación con reservas reales.</li><li>Añadir costes operativos, reforma y financiación.</li><li>Revisar normativa y licencias de uso turístico por zona.</li></ul></div>
+    <div class="card"><div class="ex-t">Cómo se calcula</div>
+      <ul class="clean"><li>Margen bruto = ingresos anuales ÷ coste de adquisición × 100.</li><li>Ingresos = precio por noche × ocupación estimada (365 días).</li><li>Coste = m² estimados × precio €/m² del distrito × 0,75.</li></ul></div>
+    <div class="card"><div class="ex-t">Limitaciones</div>
+      <ul class="clean"><li>Ocupación y coste son estimaciones, no datos reales.</li><li>No incluye gastos, impuestos ni financiación.</li><li>Muestras pequeñas en Vicálvaro, Moratalaz y Barajas.</li></ul></div>
+  </div>
+  <div class="answer"><b>Siguiente paso recomendado:</b> visitar la lista corta de inmuebles del mapa de oportunidades (Exhibit 14) y validar su ocupación con reservas reales.</div>
+</section>
+
+</div>
+
+<nav class="nav" aria-label="Navegación del informe">
+  <button class="btn" id="prev">◀ Anterior</button>
+  <div class="dots" id="dots"></div>
+  <span class="count" id="count"></span>
+  <button class="btn" id="next">Siguiente ▶</button>
+</nav>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var dots=document.getElementById('dots'),count=document.getElementById('count'),bar=document.getElementById('bar');
+  var prev=document.getElementById('prev'),next=document.getElementById('next');
+  var i=0;
+  slides.forEach(function(s,k){
+    var d=document.createElement('button');d.className='dot';d.setAttribute('aria-label','Ir a '+(s.getAttribute('aria-label')||('página '+(k+1))));
+    d.addEventListener('click',function(){go(k)});dots.appendChild(d);
+  });
+  function go(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){s.classList.toggle('active',k===i)});
+    [].forEach.call(dots.children,function(d,k){d.classList.toggle('active',k===i)});
+    count.textContent=(i+1)+' / '+slides.length;
+    prev.disabled=i===0;next.disabled=i===slides.length-1;
+    bar.style.width=((i+1)/slides.length*100)+'%';
+    try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+  }
+  prev.addEventListener('click',function(){go(i-1)});
+  next.addEventListener('click',function(){go(i+1)});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown')go(i+1);
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')go(i-1);
+    else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  });
+  var h=parseInt((location.hash||'').slice(1),10);
+  go(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>
