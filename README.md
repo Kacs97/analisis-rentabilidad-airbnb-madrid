@@ -2,7 +2,7 @@
 
 Proyecto de **Business Analytics** realizado durante mi especialización en Data Science en Madrid. Responde a una pregunta de negocio: **¿dónde y qué tipo de inmueble comprar para maximizar la rentabilidad del alquiler turístico?**
 
-📊 **Informe interactivo:** https://kacs97.github.io/1.-ANALISIS-AIRBNB-ALQUILER-TURISTICO/informe/
+📊 **Informe interactivo:** https://kacs97.github.io/analisis-rentabilidad-airbnb-madrid/informe/
 
 ## Resultados principales
 
